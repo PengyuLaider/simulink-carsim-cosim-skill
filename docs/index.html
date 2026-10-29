@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="把 AI 辅助生成 Simulink 与 CarSim 联合仿真的经验，变成可复用、可审查、有验证边界的工程工作流。">
+  <meta name="color-scheme" content="light">
+  <title>Simulink × CarSim · AI 协作工作流 Skill</title>
+  <style>
+    :root{--paper:#f5f7f3;--white:#fff;--ink:#172c29;--muted:#536864;--line:#d5dfd8;--green:#076d58;--mint:#d9eee4;--pale:#edf5ee;--gold:#a7671d;--radius:17px}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.7 system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif}a{color:inherit;text-underline-offset:4px}button{font:inherit}button,a{touch-action:manipulation}button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:3px solid #cf842e;outline-offset:5px}.skip{position:absolute;top:-70px;left:20px;background:var(--ink);color:white;padding:8px 16px;z-index:5}.skip:focus{top:12px}.wrap{width:min(1180px,calc(100% - 64px));margin:auto}header{border-bottom:1px solid var(--line)}.nav{min-height:86px;display:flex;justify-content:space-between;align-items:center;gap:24px}.brand{display:flex;align-items:center;gap:11px;font-weight:750;text-decoration:none;font-size:15px;letter-spacing:.01em}.brand svg{flex:none}.nav-links{display:flex;align-items:center;gap:25px;font-size:13px}.nav-links a{text-decoration:none}.nav-links a:hover{text-decoration:underline}.nav-links .source{border:1px solid #bdcec4;border-radius:99px;padding:7px 15px}.hero{display:grid;grid-template-columns:1.05fr 1fr;gap:64px;align-items:center;padding:66px 0 55px}.eyebrow{font-size:11px;letter-spacing:.16em;font-weight:750;color:var(--green);text-transform:uppercase;margin:0 0 18px}.hero h1{font-size:clamp(36px,4vw,53px);line-height:1.2;letter-spacing:-.035em;margin:0 0 22px;font-weight:760}.hero h1 em{font-style:normal;color:var(--green)}.lead{font-size:16px;line-height:1.95;color:var(--muted);max-width:475px;margin:0 0 27px}.actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}.action{display:inline-flex;align-items:center;justify-content:center;gap:16px;font-size:14px;font-weight:650;padding:11px 21px;border-radius:8px;text-decoration:none;border:1px solid #aabeb2;background:transparent}.action.primary{background:var(--green);border-color:var(--green);color:white}.action:hover{filter:brightness(.94)}.small-note{color:var(--muted);font-size:12px;margin:18px 0 0}.hero-visual{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:23px 24px 20px;box-shadow:0 12px 30px #233e2b06}.visual-top{display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:.04em;padding-bottom:14px;border-bottom:1px solid #e1e8e2}.visual-label{color:var(--muted)}.live-tag{display:flex;align-items:center;gap:6px;color:var(--green)}.live-tag::before{content:"";height:6px;width:6px;border-radius:50%;background:var(--green)}.hero-visual svg{width:100%;height:auto;display:block;margin:16px 0}.visual-foot{display:flex;justify-content:space-between;gap:15px;border-top:1px solid #e1e8e2;padding-top:12px;font-size:11px;color:var(--muted)}.principles{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:24px 0 25px}.principle{display:grid;grid-template-columns:24px 1fr;gap:11px}.principle-num{color:var(--green);font-size:12px;font-weight:700;padding-top:3px}.principle strong{display:block;font-size:14px;font-weight:700;margin-bottom:4px}.principle p{font-size:12px;color:var(--muted);line-height:1.7;margin:0}.workflow{padding:53px 0 43px}.section-head{display:flex;justify-content:space-between;align-items:end;gap:28px;margin-bottom:25px}.section-head h2,.usage h2{font-size:26px;line-height:1.4;letter-spacing:-.025em;margin:0;font-weight:750}.section-head p{max-width:440px;font-size:13px;color:var(--muted);margin:0}.section-kicker{font-size:10px;color:var(--green);letter-spacing:.15em;font-weight:750;margin-bottom:8px}.stage-layout{display:grid;grid-template-columns:290px 1fr;gap:24px}.tabs{display:grid;gap:7px}.tab{border:1px solid transparent;color:var(--muted);background:transparent;cursor:pointer;text-align:left;padding:12px 14px;border-radius:9px;display:flex;align-items:center;gap:13px;font-size:14px;line-height:1.5;min-height:49px}.tab .number{font-size:11px;font-weight:700;letter-spacing:.04em}.tab[aria-selected="true"]{color:var(--green);background:var(--mint);border-color:#c0ddce;font-weight:700}.tab:hover{background:#e7eee6}.tab .chevron{margin-left:auto}.stage-panel{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:29px 32px;min-height:330px}.panel-meta{display:flex;justify-content:space-between;gap:18px;margin-bottom:13px;font-size:11px;color:var(--green);font-weight:700}.panel-meta .tag{font-weight:500;color:var(--muted)}.stage-panel h3{font-size:23px;line-height:1.4;margin:0 0 10px;font-weight:740}.stage-intro{font-size:14px;line-height:1.8;color:var(--muted);margin:0 0 19px;max-width:650px}.checks{list-style:none;margin:0 0 20px;padding:0;display:grid;gap:8px}.checks li{display:grid;grid-template-columns:15px 1fr;gap:9px;font-size:13px;line-height:1.7}.checks li::before{content:"↳";color:var(--green);font-weight:700}.evidence{padding-top:15px;border-top:1px solid #e4eae4;display:flex;gap:15px;font-size:12px;line-height:1.8}.evidence strong{white-space:nowrap;color:var(--green);font-weight:700}.evidence span{color:var(--muted)}.usage{display:grid;grid-template-columns:.8fr 1.2fr;gap:50px;background:var(--ink);color:#eff6ed;border-radius:var(--radius);padding:34px 36px;align-items:start}.usage h2{font-size:24px;margin:4px 0 13px}.usage p{color:#bccdc4;font-size:13px;line-height:1.8;margin:0}.usage .section-kicker{color:#9ed2b6}.command-box{min-width:0}.command-head{display:flex;justify-content:space-between;align-items:center;gap:16px;font-size:11px;color:#bdd0c4;margin-bottom:10px}.copy{border:1px solid #658075;background:#24413a;color:#f1f8ef;border-radius:6px;font-size:12px;cursor:pointer;padding:5px 13px}.copy:hover{background:#31584b}pre{background:#11221e;border:1px solid #3c534a;color:#e2f3e6;margin:0;padding:17px 18px;border-radius:8px;white-space:pre-wrap;overflow-wrap:anywhere;font:13px/1.85 ui-monospace,"Cascadia Code",Consolas,"Microsoft YaHei",monospace}#copy-status{min-height:24px;color:#c1d2c6;font-size:11px;margin:6px 0 0}.boundary{display:grid;grid-template-columns:160px 1fr;gap:28px;margin:28px 0 0;padding:23px 0 26px;border-bottom:1px solid var(--line)}.boundary h2{font-size:13px;margin:0;font-weight:700;display:flex;gap:8px;align-items:start}.boundary p{font-size:12px;color:var(--muted);line-height:1.9;margin:0;max-width:870px}.boundary strong{font-weight:650;color:var(--ink)}footer{padding:23px 0 33px;display:flex;justify-content:space-between;gap:20px;font-size:11px;color:var(--muted)}footer a{color:var(--ink)}[hidden]{display:none!important}
+    @media(max-width:1000px){.hero{gap:35px}.stage-layout{grid-template-columns:250px 1fr}.usage{gap:28px}.visual-foot{font-size:10px}}
+    @media(max-width:760px){.wrap{width:calc(100% - 36px)}.nav{min-height:74px;gap:12px}.nav-links{gap:13px;font-size:12px}.nav-links .source{display:none}.brand{font-size:12px;gap:8px}.brand svg{width:25px}.hero{grid-template-columns:1fr;gap:29px;padding:39px 0 32px}.hero h1{font-size:39px}.hero h1 br{display:none}.hero .lead{max-width:none;font-size:15px;margin-bottom:22px}.eyebrow{margin-bottom:13px}.hero-visual{padding:18px 20px;max-width:560px;width:100%}.principles{grid-template-columns:1fr;gap:17px;padding:24px 0}.principle p{font-size:12px}.workflow{padding:34px 0 27px}.section-head{display:block;margin-bottom:21px}.section-head h2{font-size:24px}.section-head p{margin-top:12px;max-width:none}.stage-layout{grid-template-columns:1fr;gap:15px}.tabs{grid-template-columns:repeat(2,1fr);gap:6px}.tab{padding:11px 10px;gap:8px;font-size:12px}.tab .chevron{display:none}.stage-panel{padding:23px 21px;min-height:360px}.panel-meta .tag{font-size:10px}.stage-panel h3{font-size:21px}.evidence{gap:12px}.usage{grid-template-columns:1fr;padding:26px 22px;gap:23px}.usage h2{font-size:23px}.usage p{max-width:500px}.boundary{grid-template-columns:1fr;gap:10px;margin-top:22px;padding:19px 0 23px}footer{display:block;line-height:2}footer span{display:block}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">跳到主要内容</a>
+  <header>
+    <nav class="wrap nav" aria-label="主导航">
+      <a class="brand" href="../README.md" aria-label="Simulink CarSim Skill 仓库说明">
+        <svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8" fill="#076d58"/><path d="M8 11h7v5H8zM18 17h6v5h-6zM15 13.5h6V17M11.5 16v7H18" fill="none" stroke="#e8f6ec" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        <span>SIMULINK × CARSIM <span style="font-weight:450">/ SKILL</span></span>
+      </a>
+      <div class="nav-links"><a href="#workflow">六阶段方法</a><a href="#usage">如何使用</a><a class="source" href="../skills/simulink-carsim-cosim/SKILL.md">阅读 Skill ↗</a></div>
+    </nav>
+  </header>
+  <main id="main" class="wrap">
+    <section class="hero" aria-labelledby="hero-title">
+      <div>
+        <p class="eyebrow">An evidence-first AI workflow</p>
+        <h1 id="hero-title">让 AI 建立模型，<br>让<em>验证</em>支撑结论。</h1>
+        <p class="lead">把 Simulink 生成、CarSim 接入和反复调试，整理为一套可复用的协作方法。从一句需求，走到可运行、可追溯、可迁移的联合仿真工程。</p>
+        <div class="actions"><a class="action primary" href="../skills/simulink-carsim-cosim/SKILL.md">阅读完整 Skill <span aria-hidden="true">↗</span></a><a class="action" href="#workflow">浏览工作流 <span aria-hidden="true">↓</span></a></div>
+        <p class="small-note">面向 AI 编程助手与工程开发者 · 可离线浏览</p>
+      </div>
+      <figure class="hero-visual" style="margin:0" aria-labelledby="visual-caption">
+        <div class="visual-top"><span class="visual-label">ENGINEERING LOOP / 工程闭环</span><span class="live-tag">方法示意</span></div>
+        <svg viewBox="0 0 460 251" role="img" aria-label="需求经 AI 生成可读模型，Simulink 与 CarSim 双向联动，记录验证证据，失败后返回修正">
+          <defs><marker id="arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0L7 3.5L0 7" fill="none" stroke="#779b88" stroke-width="1.4"/></marker></defs>
+          <rect x="1" y="4" width="458" height="243" rx="12" fill="#f7faf6" stroke="#e4ebe3"/>
+          <path d="M120 57H159M230 85V106M273 128H337M337 147H273M121 165v42h71M385 165v42H334M192 219H72V85" fill="none" stroke="#779b88" stroke-width="1.6" marker-end="url(#arrow)"/>
+          <rect x="24" y="30" width="96" height="55" rx="8" fill="white" stroke="#bcd1c0"/>
+          <text x="72" y="52" text-anchor="middle" font-size="13" fill="#172c29" font-weight="700">需求 / 契约</text><text x="72" y="70" text-anchor="middle" font-size="9" fill="#536864">单位 · 坐标 · 验收</text>
+          <rect x="159" y="30" width="142" height="55" rx="8" fill="#e1f1e6" stroke="#9dc7af"/>
+          <text x="230" y="52" text-anchor="middle" font-size="13" fill="#076d58" font-weight="700">AI 辅助建模</text><text x="230" y="70" text-anchor="middle" font-size="9" fill="#536864">可读结构 · 可重复生成</text>
+          <rect x="24" y="106" width="249" height="59" rx="8" fill="white" stroke="#9bbdab"/>
+          <rect x="40" y="123" width="26" height="24" rx="4" fill="#d9eee4"/><path d="M46 134h6v-6h8v13h-14" fill="none" stroke="#076d58" stroke-width="1.4"/>
+          <text x="83" y="131" font-size="14" fill="#172c29" font-weight="700">Simulink</text><text x="83" y="149" font-size="9" fill="#536864">算法 · 状态机 · 信号与日志</text>
+          <rect x="337" y="106" width="97" height="59" rx="8" fill="#172c29"/>
+          <text x="385.5" y="131" text-anchor="middle" font-size="14" fill="#f0f7ee" font-weight="700">CarSim</text><text x="385.5" y="149" text-anchor="middle" font-size="9" fill="#c4d9cc">原生求解器</text>
+          <text x="304" y="116" text-anchor="middle" font-size="8" fill="#536864">控制输入</text><text x="304" y="163" text-anchor="middle" font-size="8" fill="#536864">车辆反馈</text>
+          <rect x="192" y="184" width="142" height="47" rx="8" fill="white" stroke="#9bbdab"/>
+          <text x="263" y="204" text-anchor="middle" font-size="12" fill="#076d58" font-weight="700">同版本回归与证据</text><text x="263" y="221" text-anchor="middle" font-size="9" fill="#536864">成功 + 失败 · 原始日志</text>
+          <text x="83" y="239" font-size="9" fill="#536864">失败 → 定位 → 修正</text>
+        </svg>
+        <figcaption id="visual-caption" class="visual-foot"><span>AI 负责辅助实施，工程证据决定是否通过。</span><span>MODEL → RUN → VERIFY</span></figcaption>
+      </figure>
+    </section>
+    <section class="principles" aria-label="三个基本原则">
+      <div class="principle"><span class="principle-num">01</span><div><strong>能打开，只是起点</strong><p>图形结构、原生编译、实际闭环和迁移运行，分别验收。</p></div></div>
+      <div class="principle"><span class="principle-num">02</span><div><strong>错误也属于交付物</strong><p>保留失败条件、原始日志与修复记录，避免只展示成功曲线。</p></div></div>
+      <div class="principle"><span class="principle-num">03</span><div><strong>一次结论，对应一个版本</strong><p>锁定源码、配置与测试清单；改动后重新执行相关验证。</p></div></div>
+    </section>
+    <section id="workflow" class="workflow" aria-labelledby="workflow-title">
+      <div class="section-head"><div><div class="section-kicker">THE METHOD / 六阶段</div><h2 id="workflow-title">六个阶段，逐层验证。</h2></div><p>选择一个阶段，查看 AI 应做什么，以及留下什么证据。方向键可切换阶段。</p></div>
+      <div class="stage-layout">
+        <div class="tabs" role="tablist" aria-label="工程工作流阶段" aria-orientation="vertical">
+          <button class="tab" id="tab-0" type="button" role="tab" aria-selected="true" aria-controls="stage-panel" tabindex="0" data-stage="0"><span class="number">01</span>澄清契约<span class="chevron" aria-hidden="true">→</span></button>
+          <button class="tab" id="tab-1" type="button" role="tab" aria-selected="false" aria-controls="stage-panel" tabindex="-1" data-stage="1"><span class="number">02</span>生成可读 SLX<span class="chevron" aria-hidden="true">→</span></button>
+          <button class="tab" id="tab-2" type="button" role="tab" aria-selected="false" aria-controls="stage-panel" tabindex="-1" data-stage="2"><span class="number">03</span>真实 CarSim 接入<span class="chevron" aria-hidden="true">→</span></button>
+          <button class="tab" id="tab-3" type="button" role="tab" aria-selected="false" aria-controls="stage-panel" tabindex="-1" data-stage="3"><span class="number">04</span>分层调试<span class="chevron" aria-hidden="true">→</span></button>
+          <button class="tab" id="tab-4" type="button" role="tab" aria-selected="false" aria-controls="stage-panel" tabindex="-1" data-stage="4"><span class="number">05</span>同版本回归<span class="chevron" aria-hidden="true">→</span></button>
+          <button class="tab" id="tab-5" type="button" role="tab" aria-selected="false" aria-controls="stage-panel" tabindex="-1" data-stage="5"><span class="number">06</span>迁移交付<span class="chevron" aria-hidden="true">→</span></button>
+        </div>
+        <div id="stage-panel" class="stage-panel" role="tabpanel" aria-labelledby="tab-0" tabindex="0">
+          <div class="panel-meta"><span id="stage-count">PHASE 01 / 06</span><span id="stage-tag" class="tag">先定义，再生成</span></div>
+          <h3 id="stage-title">把口头需求变成接口与验收契约</h3>
+          <p id="stage-intro" class="stage-intro">先弄清要控制什么、有哪些软件与数据、什么结果才算完成。未知项写明，避免 AI 用默认值替代工程事实。</p>
+          <ul class="checks" id="stage-checks"><li>确认仿真目标、场景、输入输出和运行入口。</li><li>明确坐标系、单位、符号、采样与求解配置。</li><li>约定通过条件、失败条件及人工决策边界。</li></ul>
+          <div class="evidence"><strong>应留下</strong><span id="stage-evidence">需求与环境清单、接口表、验收矩阵，以及待确认事项。</span></div>
+        </div>
+      </div>
+    </section>
+    <section id="usage" class="usage" aria-labelledby="usage-title">
+      <div><div class="section-kicker">START A CONVERSATION</div><h2 id="usage-title">把工作流交给 AI，<br>把验收权留在工程里。</h2><p>在支持本地 Skill 的助手中安装后，可用右侧提示词开始。具体触发方式以你的助手为准。</p></div>
+      <div class="command-box"><div class="command-head"><span>示例提示词 / 先盘点已有工程</span><button id="copy-button" class="copy" type="button">复制提示词</button></div><pre id="prompt" tabindex="0">$simulink-carsim-cosim
+
+请先只读盘点我的 Simulink + CarSim 工程，
+列出接口、环境、风险与待确认项。
+先给出最小闭环验证方案，再分层实施。
+每次结论附上当前版本、原始日志与失败记录。</pre><p id="copy-status" role="status" aria-live="polite">无需上传车辆数据，也可先整理需求与接口。</p></div>
+    </section>
+    <aside class="boundary" aria-labelledby="boundary-title"><h2 id="boundary-title"><span aria-hidden="true">ⓘ</span>使用范围与边界</h2><p>这是 <strong>AI 协作工作流规范</strong>，不包含 CarSim 求解器、授权、车型数据库或生产 SLX。接口通道、版本兼容和验收阈值须按具体工程核验。<strong>辅助工具检查通过，不等于 CarSim 闭环通过</strong>；仿真结果也不能替代实车验证。</p></aside>
+  </main>
+  <footer class="wrap"><span>SIMULINK × CARSIM / 可复用方法，不预设工程结论</span><span><a href="../README.md">仓库说明</a>　·　<a href="../skills/simulink-carsim-cosim/SKILL.md">Skill 文件</a>　·　<a href="https://github.com/PengyuLaider">作者 GitHub</a></span></footer>
+  <script>
+    'use strict';
+    const stages=[
+      {tag:'先定义，再生成',title:'把口头需求变成接口与验收契约',intro:'先弄清要控制什么、有哪些软件与数据、什么结果才算完成。未知项写明，避免 AI 用默认值替代工程事实。',checks:['确认仿真目标、场景、输入输出和运行入口。','明确坐标系、单位、符号、采样与求解配置。','约定通过条件、失败条件及人工决策边界。'],evidence:'需求与环境清单、接口表、验收矩阵，以及待确认事项。'},
+      {tag:'结构可读，构建可重复',title:'生成工程师能检查与接手的模型',intro:'用可重复执行的构建脚本生成 SLX，按功能组织子系统。模型应清楚表达算法、控制、车辆接口和数据记录。',checks:['通过受支持的 MATLAB / Simulink API 构建与连接。','为端口、信号、单位与关键参数命名并批注。','区分控制算法、界面请求和车辆真实反馈。'],evidence:'构建脚本、SLX、接口对应关系，以及模型更新或编译诊断。'},
+      {tag:'检查连接，更检查运行',title:'把原生 CarSim 求解器接进闭环',intro:'先核对本机安装与授权，再核验导入导出变量、数据库依赖和求解配置。不能用替代车辆模型冒充联合仿真。',checks:['检查真实 S-Function、求解器与必要的数据文件。','依据当前数据集逐项映射通道、单位和方向。','先完成小规模原生运行，再检查车辆响应与反馈。'],evidence:'环境记录、通道契约、原生运行日志与可解释的输入输出响应。'},
+      {tag:'缩小故障范围',title:'把“不能跑”拆成可定位的问题',intro:'先处理环境与接口，再检查数值稳定性和控制逻辑，最后检查 UI。一次改变尽量少，保留可复现的失败输入。',checks:['区分环境异常、模型异常、规划失败与控制失败。','核对命令是否发出、模型是否接收、反馈是否更新。','记录首次异常与最小复现，不用动画代替数值证据。'],evidence:'最小复现案例、原始错误栈、失败日志、修复差异与复测结果。'},
+      {tag:'冻结源码，统一判据',title:'在同一版本上完成固定回归',intro:'把正常、边界与失败恢复案例组成固定清单。只有本次版本实际执行的结果，才能支撑本次发布结论。',checks:['记录源码、配置、场景和测试清单的版本信息。','验证真实闭环、错误恢复、交互及结果记录。','保留失败记录；未执行或异常退出必须单独标明。'],evidence:'版本指纹、逐项测试结果、原始日志与已知限制，不拼接历史通过项。'},
+      {tag:'让别人能够接手',title:'从当前电脑可用，走向迁移可复现',intro:'整理最小运行文件、依赖和入口，用全新路径验证。迁移还需要目标电脑具备合法可用的 MATLAB、Simulink 与 CarSim 环境。',checks:['分清可公开的代码、用户配置和不可再分发资源。','使用相对路径或可配置路径，提供启动与排错说明。','在隔离解压目录重新检查依赖并执行约定验收。'],evidence:'交付清单、依赖说明、迁移记录、备份与回滚方法，以及未完成项。'}
+    ];
+    const tabs=Array.from(document.querySelectorAll('[role="tab"]'));
+    const panel=document.getElementById('stage-panel');
+    function selectStage(index,focus){
+      const stage=stages[index];
+      tabs.forEach((tab,i)=>{tab.setAttribute('aria-selected',String(i===index));tab.tabIndex=i===index?0:-1;});
+      panel.setAttribute('aria-labelledby','tab-'+index);
+      document.getElementById('stage-count').textContent='PHASE '+String(index+1).padStart(2,'0')+' / 06';
+      document.getElementById('stage-tag').textContent=stage.tag;
+      document.getElementById('stage-title').textContent=stage.title;
+      document.getElementById('stage-intro').textContent=stage.intro;
+      const list=document.getElementById('stage-checks');list.replaceChildren();
+      stage.checks.forEach(check=>{const item=document.createElement('li');item.textContent=check;list.appendChild(item);});
+      document.getElementById('stage-evidence').textContent=stage.evidence;
+      if(focus)tabs[index].focus();
+    }
+    tabs.forEach((tab,i)=>{
+      tab.addEventListener('click',()=>selectStage(i,false));
+      tab.addEventListener('keydown',event=>{
+        let next=i;
+        if(event.key==='ArrowDown'||event.key==='ArrowRight')next=(i+1)%tabs.length;
+        else if(event.key==='ArrowUp'||event.key==='ArrowLeft')next=(i-1+tabs.length)%tabs.length;
+        else if(event.key==='Home')next=0;
+        else if(event.key==='End')next=tabs.length-1;
+        else return;
+        event.preventDefault();selectStage(next,true);
+      });
+    });
+    document.getElementById('copy-button').addEventListener('click',async()=>{
+      const prompt=document.getElementById('prompt');
+      const status=document.getElementById('copy-status');
+      try{
+        if(!navigator.clipboard||!navigator.clipboard.writeText)throw new Error('Clipboard unavailable');
+        await navigator.clipboard.writeText(prompt.textContent);
+        status.textContent='已复制提示词，可粘贴到支持此 Skill 的 AI 助手中。';
+      }catch(error){
+        prompt.focus();
+        const selection=window.getSelection();
+        if(selection){const range=document.createRange();range.selectNodeContents(prompt);selection.removeAllRanges();selection.addRange(range);}
+        status.textContent='浏览器未允许自动复制。请选中上方提示词，按 Ctrl+C（Mac：⌘C）复制。';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Simulink CarSim Co Simulation"
+  short_description: "Build and verify Simulink CarSim co simulation"
+  default_prompt: "Use $simulink-carsim-cosim to build an inspectable Simulink model, connect the installed CarSim solver, and verify the real closed loop."
