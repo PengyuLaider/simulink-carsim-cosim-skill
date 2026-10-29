@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.DS_Store
+Thumbs.db
+runtime/
+private-evidence/
+slprj/
+*.slxc
+*.asv
+*.autosave
+*.mex*
+*.dll
+*.lic
+.env
+.env.*
